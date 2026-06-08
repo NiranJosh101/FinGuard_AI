@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package finguard.ingress;
+
+// Identifies the structural format of the incoming user prompt
+enum InputType {
+  INPUT_UNSPECIFIED = 0;
+  TEXT = 1;
+  AUDIO = 2;
+  IMAGE = 3;
+}
+
+// The exact structure the Client must send to the Gateway
+message ClientRequest {
+  string user_id = 1;         // Injected or verified by Gateway Auth
+  string session_id = 2;      // To track multi-turn conversations or approval states
+  
+  InputType input_type = 3;   // Explicitly states what kind of payload is attached
+  
+  // A 'oneof' ensures the payload can only be one of these types at a time
+  oneof payload {
+    string raw_text = 4;      // e.g., "Transfer ₦500,000 to Tunde"
+    bytes audio_bytes = 5;    // Raw PCM/WAV/MP3 audio binary data from a voice note
+    bytes image_bytes = 6;    // Raw JPEG/PNG binary data from a receipt scan or screenshot
+  }
+
+  int64 timestamp = 7;        // Epoch timestamp to prevent replay attacks
+}

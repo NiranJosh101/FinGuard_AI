@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package finguard.executor;
+
+import "proto/intent.proto";
+
+message ExecutionRequest {
+  string transaction_id = 1;
+  finguard.intent.IntentPayload finalized_intent = 2;
+  
+  // The cryptographic verification signature confirming 
+  // that this passed through the Policy/Approval pipeline.
+  bytes gateway_signature = 3; 
+}
+
+message ExecutionResponse {
+  enum ExecutionStatus {
+    STATUS_UNSPECIFIED = 0;
+    SUCCESS = 1;
+    FAILED_INSUFFICIENT_FUNDS = 2;
+    FAILED_NETWORK_TIMEOUT = 3;
+    FAILED_INVALID_ACCOUNT = 4;
+  }
+  
+  ExecutionStatus status = 1;
+  string reference_code = 2;      // The banking trace/RRN ID string
+  int64 settled_timestamp = 3;
+}

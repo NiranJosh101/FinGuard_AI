@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package finguard.audit;
+
+import "proto/ingress.proto";
+import "proto/intent.proto";
+import "proto/risk.proto";
+import "proto/policy.proto";
+
+message AuditLogRecord {
+  string log_id = 1;               // Unique GUID for the log entry
+  int64 timestamp = 2;             // Unix epoch when the record was sealed
+  
+  // The Complete Trace Paper Trail
+  finguard.ingress.ClientRequest client_request = 3;
+  finguard.intent.IntentPayload extracted_intent = 4;
+  finguard.risk.RiskProfile risk_profile = 5;
+  finguard.policy.PolicyDecision policy_decision = 6;
+  
+  // Final Terminal Outcomes
+  string final_execution_status = 7; // e.g., "AUTO_ROUTED_SUCCESS", "BLOCKED_BY_POLICY", "MFA_TIMED_OUT"
+  string execution_error_message = 8;// Filled only if the bank ledger returned a failure
+}

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package finguard.policy;
+
+// The final system directive for execution routing
+enum PolicyEffect {
+  EFFECT_UNSPECIFIED = 0;
+  ALLOW = 1;                  // Pass straight to execution engine
+  REQUIRE_CONFIRMATION = 2;   // Hold; Ask user to tap 'Confirm' in UI (Medium Risk)
+  REQUIRE_APPROVAL = 3;       // Hold; Require high-level MFA/PIN entry (High Risk)
+  BLOCK = 4;                  // Hard stop; Reject completely (Critical Risk/Violations)
+}
+
+// The output payload from the Policy Enforcement Engine
+message PolicyDecision {
+  PolicyEffect effect = 1;
+  
+  // A structured list of rule codes triggered (e.g., "RULE_LIMIT_EXCEEDED", "RULE_NEW_RECIPIPIENT")
+  repeated string triggered_rules = 2; 
+  
+  // Clear, friendly text explaining why the system made this choice
+  repeated string user_facing_reasons = 3; 
+  
+  // The Unix timestamp indicating how long an approval token remains valid
+  int64 challenge_ttl_seconds = 4; 
+}

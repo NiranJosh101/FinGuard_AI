@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package finguard.intent;
+
+enum ActionType {
+  ACTION_UNSPECIFIED = 0;
+  CHECK_BALANCE = 1;
+  TRANSFER = 2;
+  BUY_CRYPTO = 3;
+  UNKNOWN_ACTION = 4;
+}
+
+// NEW: Tells the Gateway exactly where this transaction is intended to execute
+enum TargetNetwork {
+  NETWORK_UNSPECIFIED = 0;
+  FIAT_BANK_ACH = 1;      // Traditional bank accounts (e.g., GTBank, Zenith)
+  CRYPTO_BLOCKCHAIN = 2;  // Blockchain addresses (e.g., Bitcoin, Ethereum network)
+  INTERNAL_WALLET = 3;   // App-to-app internal user wallet ledger
+}
+
+enum UrgencyLevel {
+  URGENCY_UNSPECIFIED = 0;
+  STANDARD = 1;
+  HIGH_URGENCY = 2;
+}
+
+enum TransactionCategory {
+  CATEGORY_UNSPECIFIED = 0;
+  PEER_TO_PEER = 1;
+  BILL_PAYMENT = 2;
+  SPECULATIVE_ASSET = 3;
+}
+
+message IntentPayload {
+  ActionType action = 1;
+  double amount = 2;         
+  string currency = 3;       // e.g., "NGN", "USD"
+  
+  // The LLM populates this with the literal alias ("Tunde") or identifier it heard
+  string recipient_alias = 4; 
+  
+  TargetNetwork target_network = 5; // NEW: Extracted by LLM based on context
+  TransactionCategory category = 6;
+  UrgencyLevel urgency = 7;
+  bool recipient_is_explicit = 8; 
+  
+  bool is_ambiguous = 9;     
+  string status_message = 10; 
+}
