@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package finguard.executor;
 
-import "proto/intent.proto";
+import "finguard_schemas/intent.proto";
 
 message ExecutionRequest {
   string transaction_id = 1;

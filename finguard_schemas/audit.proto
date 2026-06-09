@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package finguard.audit;
 
-import "proto/ingress.proto";
-import "proto/intent.proto";
-import "proto/risk.proto";
-import "proto/policy.proto";
+import "finguard_schemas/ingress.proto";
+import "finguard_schemas/intent.proto";
+import "finguard_schemas/risk.proto";
+import "finguard_schemas/policy.proto";
 
 message AuditLogRecord {
   string log_id = 1;               // Unique GUID for the log entry
