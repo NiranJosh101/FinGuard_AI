@@ -24,7 +24,7 @@ class IntentServiceServicer(intent_pb2_grpc.IntentServiceServicer):
 
     async def ProcessIntentStream(
         self, 
-        request: ingress_pb2.IngressPayload, 
+        request: ingress_pb2.ClientRequest,
         context: grpc.aio.ServicerContext
     ) -> intent_pb2.IntentPayload:
         """
@@ -74,7 +74,7 @@ async def serve():
     # Register your servicer implementation class with the running gRPC matrix
     intent_pb2_grpc.add_IntentServiceServicer_to_server(IntentServiceServicer(), server)
     
-    # Listen globally over port 50051 (Standard internal microservice port configuration)
+    # Listen globally over port 50051 
     listen_addr = "[::]:50051"
     server.add_insecure_port(listen_addr)
     

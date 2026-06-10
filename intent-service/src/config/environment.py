@@ -10,7 +10,7 @@ class EnvironmentConfig:
     # --- Core LLM Engine Configuration ---
     LLM_API_KEY: str = field(default_factory=lambda: os.getenv("LLM_API_KEY", ""))
     LLM_ENDPOINT: str = field(default_factory=lambda: os.getenv("LLM_ENDPOINT", "https://api.openai.com/v1"))
-    INTENT_LLM_MODEL: str = field(default_factory=lambda: os.getenv("INTENT_LLM_MODEL", "gpt-4o"))
+    INTENT_LLM_MODEL: str = field(default_factory=lambda: os.getenv("INTENT_LLM_MODEL", "llama-3.1-8b-instant"))
     MIN_LLM_CONFIDENCE_THRESHOLD: float = field(default_factory=lambda: float(os.getenv("MIN_LLM_CONFIDENCE_THRESHOLD", "0.75")))
     
     # --- Voice Processing Vector (STT) ---
@@ -25,7 +25,7 @@ class EnvironmentConfig:
     # --- Hard System Compliance Ceilings ---
     # ₦1,000,000 ceiling mapped entirely in minor units (Kobo) to ensure deterministic integer math
     ABSOLUTE_SYSTEM_CEILING_MINOR_UNITS: int = field(default=100000000)
-
+    SYSTEM_MAX_CEILING: float = float(os.getenv("SYSTEM_MAX_CEILING", "1000000.0"))
     # --- Latency & Execution Timeout Budgets (Seconds) ---
     TOTAL_ORCHESTRATOR_TIMEOUT_SEC: float = field(default_factory=lambda: float(os.getenv("TOTAL_ORCHESTRATOR_TIMEOUT_SEC", "4.0")))
     STT_PROCESSING_TIMEOUT_SEC: float = field(default_factory=lambda: float(os.getenv("STT_PROCESSING_TIMEOUT_SEC", "1.5")))

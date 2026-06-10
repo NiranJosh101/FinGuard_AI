@@ -22,23 +22,26 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+import ingress_pb2 as ingress__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cintent.proto\x12\x0f\x66inguard.intent\"\xe4\x02\n\rIntentPayload\x12+\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32\x1b.finguard.intent.ActionType\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x01\x12\x10\n\x08\x63urrency\x18\x03 \x01(\t\x12\x17\n\x0frecipient_alias\x18\x04 \x01(\t\x12\x36\n\x0etarget_network\x18\x05 \x01(\x0e\x32\x1e.finguard.intent.TargetNetwork\x12\x36\n\x08\x63\x61tegory\x18\x06 \x01(\x0e\x32$.finguard.intent.TransactionCategory\x12.\n\x07urgency\x18\x07 \x01(\x0e\x32\x1d.finguard.intent.UrgencyLevel\x12\x1d\n\x15recipient_is_explicit\x18\x08 \x01(\x08\x12\x14\n\x0cis_ambiguous\x18\t \x01(\x08\x12\x16\n\x0estatus_message\x18\n \x01(\t*i\n\nActionType\x12\x16\n\x12\x41\x43TION_UNSPECIFIED\x10\x00\x12\x11\n\rCHECK_BALANCE\x10\x01\x12\x0c\n\x08TRANSFER\x10\x02\x12\x0e\n\nBUY_CRYPTO\x10\x03\x12\x12\n\x0eUNKNOWN_ACTION\x10\x04*g\n\rTargetNetwork\x12\x17\n\x13NETWORK_UNSPECIFIED\x10\x00\x12\x11\n\rFIAT_BANK_ACH\x10\x01\x12\x15\n\x11\x43RYPTO_BLOCKCHAIN\x10\x02\x12\x13\n\x0fINTERNAL_WALLET\x10\x03*G\n\x0cUrgencyLevel\x12\x17\n\x13URGENCY_UNSPECIFIED\x10\x00\x12\x0c\n\x08STANDARD\x10\x01\x12\x10\n\x0cHIGH_URGENCY\x10\x02*j\n\x13TransactionCategory\x12\x18\n\x14\x43\x41TEGORY_UNSPECIFIED\x10\x00\x12\x10\n\x0cPEER_TO_PEER\x10\x01\x12\x10\n\x0c\x42ILL_PAYMENT\x10\x02\x12\x15\n\x11SPECULATIVE_ASSET\x10\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cintent.proto\x12\x0f\x66inguard.intent\x1a\ringress.proto\"\xe4\x02\n\rIntentPayload\x12+\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32\x1b.finguard.intent.ActionType\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x01\x12\x10\n\x08\x63urrency\x18\x03 \x01(\t\x12\x17\n\x0frecipient_alias\x18\x04 \x01(\t\x12\x36\n\x0etarget_network\x18\x05 \x01(\x0e\x32\x1e.finguard.intent.TargetNetwork\x12\x36\n\x08\x63\x61tegory\x18\x06 \x01(\x0e\x32$.finguard.intent.TransactionCategory\x12.\n\x07urgency\x18\x07 \x01(\x0e\x32\x1d.finguard.intent.UrgencyLevel\x12\x1d\n\x15recipient_is_explicit\x18\x08 \x01(\x08\x12\x14\n\x0cis_ambiguous\x18\t \x01(\x08\x12\x16\n\x0estatus_message\x18\n \x01(\t*i\n\nActionType\x12\x16\n\x12\x41\x43TION_UNSPECIFIED\x10\x00\x12\x11\n\rCHECK_BALANCE\x10\x01\x12\x0c\n\x08TRANSFER\x10\x02\x12\x0e\n\nBUY_CRYPTO\x10\x03\x12\x12\n\x0eUNKNOWN_ACTION\x10\x04*g\n\rTargetNetwork\x12\x17\n\x13NETWORK_UNSPECIFIED\x10\x00\x12\x11\n\rFIAT_BANK_ACH\x10\x01\x12\x15\n\x11\x43RYPTO_BLOCKCHAIN\x10\x02\x12\x13\n\x0fINTERNAL_WALLET\x10\x03*G\n\x0cUrgencyLevel\x12\x17\n\x13URGENCY_UNSPECIFIED\x10\x00\x12\x0c\n\x08STANDARD\x10\x01\x12\x10\n\x0cHIGH_URGENCY\x10\x02*j\n\x13TransactionCategory\x12\x18\n\x14\x43\x41TEGORY_UNSPECIFIED\x10\x00\x12\x10\n\x0cPEER_TO_PEER\x10\x01\x12\x10\n\x0c\x42ILL_PAYMENT\x10\x02\x12\x15\n\x11SPECULATIVE_ASSET\x10\x03\x32g\n\rIntentService\x12V\n\x13ProcessIntentStream\x12\x1f.finguard.ingress.ClientRequest\x1a\x1e.finguard.intent.IntentPayloadb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'intent_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_ACTIONTYPE']._serialized_start=392
-  _globals['_ACTIONTYPE']._serialized_end=497
-  _globals['_TARGETNETWORK']._serialized_start=499
-  _globals['_TARGETNETWORK']._serialized_end=602
-  _globals['_URGENCYLEVEL']._serialized_start=604
-  _globals['_URGENCYLEVEL']._serialized_end=675
-  _globals['_TRANSACTIONCATEGORY']._serialized_start=677
-  _globals['_TRANSACTIONCATEGORY']._serialized_end=783
-  _globals['_INTENTPAYLOAD']._serialized_start=34
-  _globals['_INTENTPAYLOAD']._serialized_end=390
+  _globals['_ACTIONTYPE']._serialized_start=407
+  _globals['_ACTIONTYPE']._serialized_end=512
+  _globals['_TARGETNETWORK']._serialized_start=514
+  _globals['_TARGETNETWORK']._serialized_end=617
+  _globals['_URGENCYLEVEL']._serialized_start=619
+  _globals['_URGENCYLEVEL']._serialized_end=690
+  _globals['_TRANSACTIONCATEGORY']._serialized_start=692
+  _globals['_TRANSACTIONCATEGORY']._serialized_end=798
+  _globals['_INTENTPAYLOAD']._serialized_start=49
+  _globals['_INTENTPAYLOAD']._serialized_end=405
+  _globals['_INTENTSERVICE']._serialized_start=800
+  _globals['_INTENTSERVICE']._serialized_end=903
 # @@protoc_insertion_point(module_scope)
