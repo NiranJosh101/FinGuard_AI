@@ -22,7 +22,7 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-import intent_pb2 as intent__pb2
+from . import intent_pb2 as intent__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nrisk.proto\x12\rfinguard.risk\x1a\x0cintent.proto\"\xce\x01\n\x0bRiskProfile\x12,\n\nrisk_level\x18\x01 \x01(\x0e\x32\x18.finguard.risk.RiskLevel\x12\x12\n\nrisk_score\x18\x02 \x01(\x02\x12\x18\n\x10recipient_is_new\x18\x03 \x01(\x08\x12 \n\x18velocity_limit_triggered\x18\x04 \x01(\x08\x12 \n\x18pattern_anomaly_detected\x18\x05 \x01(\x08\x12\x1f\n\x17risk_evaluation_summary\x18\x06 \x01(\t*N\n\tRiskLevel\x12\x14\n\x10RISK_UNSPECIFIED\x10\x00\x12\x07\n\x03LOW\x10\x01\x12\n\n\x06MEDIUM\x10\x02\x12\x08\n\x04HIGH\x10\x03\x12\x0c\n\x08\x43RITICAL\x10\x04\x32Y\n\x0bRiskService\x12J\n\x0c\x45valuateRisk\x12\x1e.finguard.intent.IntentPayload\x1a\x1a.finguard.risk.RiskProfileb\x06proto3')

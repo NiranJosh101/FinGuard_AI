@@ -3,8 +3,8 @@
 import grpc
 import warnings
 
-import ingress_pb2 as ingress__pb2
-import intent_pb2 as intent__pb2
+from . import ingress_pb2 as ingress__pb2
+from . import intent_pb2 as intent__pb2
 
 GRPC_GENERATED_VERSION = '1.81.0'
 GRPC_VERSION = grpc.__version__

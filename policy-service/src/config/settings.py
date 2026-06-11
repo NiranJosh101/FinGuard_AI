@@ -1,54 +1,22 @@
 import os
-from typing import Set
-from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Server Configurations
+GRPC_PORT = os.getenv("GRPC_PORT", "50052")  # Using 50052 to separate from Risk Service (50051)
 
-class PolicySettings(BaseSettings):
-    """
-    Defines the system-wide thresholds, rules, and limits for the Policy Engine.
-    Values can be overridden using environment variables (e.g., POLICY_MAX_CEILING_NGN).
-    """
+# Hard Compliance Ceilings
+MAX_TRANSACTION_CEILING_NGN = float(os.getenv("MAX_TRANSACTION_CEILING_NGN", "1000000.0"))
 
-    # --- Structural Defaults ---
-    SYSTEM_NAME: str = "finguard-policy-service"
-    ENV: str = "production"
+# Policy Risk Step Thresholds (Decision Matrix Steps)
+RISK_THRESHOLD_CONFIRMATION = float(os.getenv("RISK_THRESHOLD_CONFIRMATION", "0.4")) # >= 0.4 is Medium Risk
+RISK_THRESHOLD_APPROVAL = float(os.getenv("RISK_THRESHOLD_APPROVAL", "0.8"))         # >= 0.8 is High Risk
 
-    # --- Financial Ceilings ---
-    # Absolute transaction ceiling (e.g., ₦1,000,000)
-    MAX_CEILING_NGN: float = 1000000.0
+# Operational Token Lifespan
+CHALLENGE_TTL_SECONDS = int(os.getenv("CHALLENGE_TTL_SECONDS", "300")) # 5-minute hold windows
 
-    # --- Risk Threshold Steps ---
-    # Any score equal to or higher than this triggers a hard BLOCK (unless overridden by track)
-    # Applied to specific risky actions or combined score configurations
-    RISK_SCORE_CRITICAL: float = 0.95
-    
-    # Risk Score >= 0.8 -> REQUIRE_APPROVAL (High Risk)
-    RISK_THRESHOLD_APPROVAL: float = 0.8
-    
-    # Risk Score >= 0.4 AND < 0.8 -> REQUIRE_CONFIRMATION (Medium Risk)
-    RISK_THRESHOLD_CONFIRMATION: float = 0.4
-
-    # --- Operational Timeouts ---
-    # Default TTL (Seconds) for step-up actions (e.g., 5 minutes)
-    DEFAULT_CHALLENGE_TTL_SECONDS: int = 300
-
-    # --- Rule Error/Reason Messages ---
-    MSG_AMBIGUOUS_INTENT: str = "Transaction parameters are ambiguous or incomplete."
-    MSG_UNKNOWN_ACTION: str = "Unrecognized transaction or system instruction requested."
-    MSG_LIMIT_EXCEEDED: str = "Transaction violates single-operation limit ceiling."
-    MSG_NEW_RECIPIENT: str = "New recipient detected. Additional verification required."
-    MSG_HIGH_RISK_SCORE: str = "Elevated transactional anomalies flagged by security telemetry."
-    MSG_SAFE_TRANSACTION: str = "Transaction successfully verified within baseline parameters."
-
-    # Allow configuration loading from environment variables or .env files
-    model_config = SettingsConfigDict(
-        env_prefix="POLICY_",
-        case_sensitive=True,
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
-    )
-
-
-# Globally accessible configuration instance
-settings = PolicySettings()
+# User-Facing Intent Explanations
+MSG_AMBIGUOUS_INTENT = "Transaction parameters are ambiguous or incomplete."
+MSG_UNKNOWN_ACTION = "Unrecognized transaction or system instruction requested."
+MSG_LIMIT_EXCEEDED = f"Transaction violates single-operation limit ceiling of ₦{MAX_TRANSACTION_CEILING_NGN:,.2f}."
+MSG_NEW_RECIPIENT = "New recipient detected. Additional verification required."
+MSG_HIGH_RISK_SCORE = "Elevated transactional anomalies flagged by security telemetry."
+MSG_SAFE_TRANSACTION = "Transaction successfully verified within baseline parameters."

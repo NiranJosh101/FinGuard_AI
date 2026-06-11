@@ -22,8 +22,8 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-import intent_pb2 as intent__pb2
-import risk_pb2 as risk__pb2
+from . import intent_pb2 as intent__pb2
+from . import risk_pb2 as risk__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cpolicy.proto\x12\x0f\x66inguard.policy\x1a\x0cintent.proto\x1a\nrisk.proto\"\x94\x01\n\x0ePolicyDecision\x12-\n\x06\x65\x66\x66\x65\x63t\x18\x01 \x01(\x0e\x32\x1d.finguard.policy.PolicyEffect\x12\x17\n\x0ftriggered_rules\x18\x02 \x03(\t\x12\x1b\n\x13user_facing_reasons\x18\x03 \x03(\t\x12\x1d\n\x15\x63hallenge_ttl_seconds\x18\x04 \x01(\x03\"\x83\x01\n\x17PolicyEvaluationRequest\x12\x36\n\x0eintent_payload\x18\x01 \x01(\x0b\x32\x1e.finguard.intent.IntentPayload\x12\x30\n\x0crisk_profile\x18\x02 \x01(\x0b\x32\x1a.finguard.risk.RiskProfile*l\n\x0cPolicyEffect\x12\x16\n\x12\x45\x46\x46\x45\x43T_UNSPECIFIED\x10\x00\x12\t\n\x05\x41LLOW\x10\x01\x12\x18\n\x14REQUIRE_CONFIRMATION\x10\x02\x12\x14\n\x10REQUIRE_APPROVAL\x10\x03\x12\t\n\x05\x42LOCK\x10\x04\x32w\n\rPolicyService\x12\x66\n\x19\x45valuateTransactionPolicy\x12(.finguard.policy.PolicyEvaluationRequest\x1a\x1f.finguard.policy.PolicyDecisionb\x06proto3')
