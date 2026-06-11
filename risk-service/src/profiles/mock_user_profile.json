@@ -1,0 +1,16 @@
+{
+    "user_id": "user_123",
+    "average_transfer_amount": 50000.0,
+    "max_historical_amount": 150000.0,
+    "known_recipients": [
+        "Tunde",
+        "Sarah",
+        "John"
+    ],
+    "common_networks": [
+        "FIAT_BANK_ACH"
+    ],
+    "common_categories": [
+        "P2P_TRANSFER"
+    ]
+}

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package finguard.intent;
 
+import "ingress.proto";
+
 enum ActionType {
   ACTION_UNSPECIFIED = 0;
   CHECK_BALANCE = 1;
@@ -10,12 +12,11 @@ enum ActionType {
   UNKNOWN_ACTION = 4;
 }
 
-// NEW: Tells the Gateway exactly where this transaction is intended to execute
 enum TargetNetwork {
   NETWORK_UNSPECIFIED = 0;
-  FIAT_BANK_ACH = 1;      // Traditional bank accounts (e.g., GTBank, Zenith)
-  CRYPTO_BLOCKCHAIN = 2;  // Blockchain addresses (e.g., Bitcoin, Ethereum network)
-  INTERNAL_WALLET = 3;   // App-to-app internal user wallet ledger
+  FIAT_BANK_ACH = 1;
+  CRYPTO_BLOCKCHAIN = 2;
+  INTERNAL_WALLET = 3;
 }
 
 enum UrgencyLevel {
@@ -33,17 +34,25 @@ enum TransactionCategory {
 
 message IntentPayload {
   ActionType action = 1;
-  double amount = 2;         
-  string currency = 3;       // e.g., "NGN", "USD"
-  
-  // The LLM populates this with the literal alias ("Tunde") or identifier it heard
-  string recipient_alias = 4; 
-  
-  TargetNetwork target_network = 5; // NEW: Extracted by LLM based on context
+  double amount = 2;
+  string currency = 3;
+
+  string recipient_alias = 4;
+
+  TargetNetwork target_network = 5;
   TransactionCategory category = 6;
   UrgencyLevel urgency = 7;
-  bool recipient_is_explicit = 8; 
-  
-  bool is_ambiguous = 9;     
-  string status_message = 10; 
+
+  bool recipient_is_explicit = 8;
+
+  bool is_ambiguous = 9;
+  string status_message = 10;
+}
+
+service IntentService {
+  rpc ProcessIntentStream (
+    finguard.ingress.ClientRequest
+  ) returns (
+    IntentPayload
+  );
 }
