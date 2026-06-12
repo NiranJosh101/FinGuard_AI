@@ -1,0 +1,5 @@
+protobuf==5.26.1
+grpcio==1.62.2
+grpcio-tools==1.62.2
+redis==5.0.4
+pydantic-settings==2.2.1

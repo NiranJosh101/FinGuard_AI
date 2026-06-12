@@ -3,8 +3,8 @@ package state;
 
 enum TransactionStatus {
   STATUS_UNKNOWN = 0;
-  PENDING_USER_PIN = 1;       // Branch B
-  PENDING_USER_TAP = 2;       // Branch C
+  PENDING_USER_PIN = 1;
+  PENDING_USER_TAP = 2;
   APPROVED = 3;
   EXPIRED = 4;
   REJECTED_BY_USER = 5;
@@ -15,12 +15,9 @@ message CachedTransaction {
   string transaction_id = 1;
   string user_id = 2;
   TransactionStatus status = 3;
-  
-  // Storing raw bytes isolates this service from changing intent/risk structures
   bytes serialized_intent_payload = 4; 
   bytes serialized_risk_profile = 5;
-  
   int64 created_at = 6;
   int64 expires_at = 7;
-  string challenge_salt = 8; // For PIN/Signature verification verification
+  string challenge_salt = 8;
 }

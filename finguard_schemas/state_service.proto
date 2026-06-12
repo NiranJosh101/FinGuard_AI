@@ -1,0 +1,48 @@
+syntax = "proto3";
+package state;
+
+import "state.proto"; // Importing the structure you just wrote
+
+service TransactionStateService {
+  // First Run: Freeze the transaction in flight
+  rpc FreezeTransaction (FreezeRequest) returns (FreezeResponse);
+  
+  // Second Run (Step 1): Gateway fetches the payload to verify the PIN/Tap challenge
+  rpc GetTransaction (GetTransactionRequest) returns (GetTransactionResponse);
+  
+  // Second Run (Step 2): Update state after validation or timeout
+  rpc MutateTransactionStatus (MutateStatusRequest) returns (MutateStatusResponse);
+}
+
+// --- Request / Response Messages ---
+
+message FreezeRequest {
+  string user_id = 1;
+  bytes serialized_intent_payload = 2;
+  bytes serialized_risk_profile = 3;
+  int64 ttl_seconds = 4; // e.g., 300 for 5 minutes
+}
+
+message FreezeResponse {
+  string transaction_id = 1;
+  int64 expires_at = 2;
+}
+
+message GetTransactionRequest {
+  string transaction_id = 1;
+}
+
+message GetTransactionResponse {
+  CachedTransaction transaction = 1;
+}
+
+message MutateStatusRequest {
+  string transaction_id = 1;
+  TransactionStatus expected_current_status = 2; // Optimistic locking / Safety check
+  TransactionStatus target_status = 3;
+}
+
+message MutateStatusResponse {
+  bool success = 1;
+  TransactionStatus current_status = 2;
+}

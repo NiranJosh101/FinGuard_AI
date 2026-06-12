@@ -1,0 +1,28 @@
+syntax = "proto3";
+package ingress;
+
+// What the Gateway returns to the Mobile/Web client on RUN 1 
+// when a Policy Guardrail is hit.
+message ChallengeRequiredResponse {
+  string transaction_id = 1;
+  string challenge_type = 2;   // "PIN_ENTRY" or "OPERATIONAL_TAP"
+  string message = 3;          // "New recipient detected. Please confirm."
+  int64 expires_at = 4;
+}
+
+// What the Mobile/Web client sends back to the Gateway on RUN 2
+message SubmitChallengeRequest {
+  string transaction_id = 1;
+  
+  // Dynamic payload based on challenge type
+  oneof challenge_proof {
+    string pin_hash = 2;       // Raw or hashed PIN for Branch B
+    bool user_confirmed = 3;   // Simple true/false tap for Branch C
+  }
+}
+
+message SubmitChallengeResponse {
+  bool success = 1;
+  string message = 2;          // "Transaction executed successfully" or "Invalid PIN"
+  string execution_ref = 3;    // Core banking reference if successful
+}
