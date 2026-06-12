@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package finguard.risk;
 
+// Import the intent payload definitions so the service can read it
+import "intent.proto";
+
 // Categorized risk levels based on calculated scores
 enum RiskLevel {
   RISK_UNSPECIFIED = 0;
@@ -14,12 +17,18 @@ enum RiskLevel {
 // The output payload from the Risk Assessment Engine
 message RiskProfile {
   RiskLevel risk_level = 1;
-  float risk_score = 2;        // A mathematical score between 0.0 and 1.0
+  float risk_score = 2;              // A mathematical score between 0.0 and 1.0
   
   // --- DETAILED RISK FACTORS (Telemetry) ---
-  bool recipient_is_new = 3;    // Set to true by looking up historical transaction data
+  bool recipient_is_new = 3;         // Set to true by looking up historical transaction data
   bool velocity_limit_triggered = 4; // True if user is sending too many transactions in a short window
   bool pattern_anomaly_detected = 5; // True if amount deviates wildly from user's typical average
   
   string risk_evaluation_summary = 6; // Human-readable trace of why this score was assigned
+}
+
+// === THE MISSING LINK ===
+// This block tells protoc to generate RiskServiceServicer and RiskServiceStub
+service RiskService {
+  rpc EvaluateRisk (finguard.intent.IntentPayload) returns (RiskProfile);
 }

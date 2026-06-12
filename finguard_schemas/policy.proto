@@ -2,25 +2,34 @@ syntax = "proto3";
 
 package finguard.policy;
 
-// The final system directive for execution routing
+// Import the adjacent domain structures
+import "intent.proto"; 
+import "risk.proto";
+
 enum PolicyEffect {
   EFFECT_UNSPECIFIED = 0;
-  ALLOW = 1;                  // Pass straight to execution engine
-  REQUIRE_CONFIRMATION = 2;   // Hold; Ask user to tap 'Confirm' in UI (Medium Risk)
-  REQUIRE_APPROVAL = 3;       // Hold; Require high-level MFA/PIN entry (High Risk)
-  BLOCK = 4;                  // Hard stop; Reject completely (Critical Risk/Violations)
+  ALLOW = 1;                  
+  REQUIRE_CONFIRMATION = 2;   
+  REQUIRE_APPROVAL = 3;       
+  BLOCK = 4;                  
 }
 
-// The output payload from the Policy Enforcement Engine
 message PolicyDecision {
   PolicyEffect effect = 1;
-  
-  // A structured list of rule codes triggered (e.g., "RULE_LIMIT_EXCEEDED", "RULE_NEW_RECIPIPIENT")
   repeated string triggered_rules = 2; 
-  
-  // Clear, friendly text explaining why the system made this choice
   repeated string user_facing_reasons = 3; 
-  
-  // The Unix timestamp indicating how long an approval token remains valid
   int64 challenge_ttl_seconds = 4; 
+}
+
+// ─── NEW ADDITIONS ───
+
+// The unified request wrapper carrying both upstream scopes
+message PolicyEvaluationRequest {
+  finguard.intent.IntentPayload intent_payload = 1;
+  finguard.risk.RiskProfile risk_profile = 2;
+}
+
+// The service definition exposing the execution gate
+service PolicyService {
+  rpc EvaluateTransactionPolicy (PolicyEvaluationRequest) returns (PolicyDecision);
 }

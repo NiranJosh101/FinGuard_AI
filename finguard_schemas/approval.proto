@@ -1,26 +1,26 @@
 syntax = "proto3";
+package state;
 
-package finguard.approval;
-
-// The lifecycle tracking states for a paused transaction
-enum WorkflowStatus {
-  STATUS_UNSPECIFIED = 0;
-  PENDING_USER_ACTION = 1; // Waiting for PIN or Confirmation tap
-  APPROVED = 2;            // User successfully completed challenge
-  REJECTED_BY_USER = 3;    // User clicked 'Cancel'
-  EXPIRED = 4;             // User took too long to respond (TTL exceeded)
+enum TransactionStatus {
+  STATUS_UNKNOWN = 0;
+  PENDING_USER_PIN = 1;       // Branch B
+  PENDING_USER_TAP = 2;       // Branch C
+  APPROVED = 3;
+  EXPIRED = 4;
+  REJECTED_BY_USER = 5;
+  EXECUTED = 6;
 }
 
-// Representing a locked transaction state saved in our system cache/DB
-message PendingTransaction {
-  string transaction_id = 1; // Unique token generated for this specific signature
+message CachedTransaction {
+  string transaction_id = 1;
   string user_id = 2;
+  TransactionStatus status = 3;
   
-  WorkflowStatus status = 3;
-  
-  // Encapsulates the binary payload of the intent we paused,
-  // allowing us to resume execution without re-running the LLM later.
+  // Storing raw bytes isolates this service from changing intent/risk structures
   bytes serialized_intent_payload = 4; 
+  bytes serialized_risk_profile = 5;
   
-  int64 expires_at = 5;      // Unix timestamp when this challenge becomes void
+  int64 created_at = 6;
+  int64 expires_at = 7;
+  string challenge_salt = 8; // For PIN/Signature verification verification
 }
