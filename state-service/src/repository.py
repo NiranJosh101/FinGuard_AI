@@ -1,5 +1,6 @@
 import logging
 import redis.asyncio as aioredis
+from typing import Optional
 from config import settings
 from generated.state_pb2 import CachedTransaction
 
@@ -40,7 +41,7 @@ class TransactionRepository:
             logger.error(f"Failed to write transaction {tx.transaction_id} to Redis: {e}")
             return False
 
-    async def get_transaction(self, transaction_id: str) -> CachedTransaction | None:
+    async def get_transaction(self, transaction_id: str) -> Optional[CachedTransaction]:
         """
         Retrieves raw binary state out of Redis and reconstructs the structured 
         CachedTransaction protobuf message. Returns None if expired or missing.
@@ -71,3 +72,11 @@ class TransactionRepository:
         except Exception as e:
             logger.error(f"Failed to delete key {key}: {e}")
             return False
+
+    async def close(self):
+        """
+        Gracefully closes the underlying Redis connection pool resources.
+        Called directly by the gRPC server during shutdown cycles.
+        """
+        logger.info("Closing Redis asynchronous repository pool connection...")
+        await self.redis_client.aclose()
